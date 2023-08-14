@@ -9,11 +9,12 @@ class AntennaFactory:
     @staticmethod
     def create_antenna(antenna_type: str, **kwargs) -> SingleAntenna:  # TODO: aprovechar el typing en vez de kwargs
         """Factory method"""
-        match antenna_type:
-            case 'dipole':
-                return DipoleAntenna(**kwargs)
-            case 'loop':
-                return LoopAntenna(**kwargs)
+        if antenna_type == 'dipole':
+            return DipoleAntenna(**kwargs)
+        elif antenna_type == 'loop':
+            return LoopAntenna(**kwargs)
+        else:
+            raise ValueError('Tipo de antena no válido.')
 
     @staticmethod
     def create_antenna_array(antennas: list[Antenna]) -> AntennaArray:
