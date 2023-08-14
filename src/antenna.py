@@ -2,8 +2,6 @@ from abc import abstractmethod, ABC
 
 
 class Antenna(ABC):
-    def __init__(self):
-        pass
 
     @property
     def max_directivity(self):
@@ -11,7 +9,7 @@ class Antenna(ABC):
         return
 
     @property
-    def fdp(self):
+    def ftb(self):
         """Calcula la relación FTB de la antena"""
         return
 
