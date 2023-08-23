@@ -1,8 +1,10 @@
-from src.antenna_parameters.params import Polarization
+from abc import ABC
+
 from src.antenna import Antenna
+from src.antenna_parameters.polarization import PolarizationFactory
 
 
-class SingleAntenna(Antenna):
-    def __init__(self, polarization: Polarization = None):
+class SingleAntenna(Antenna, ABC):
+    def __init__(self, polarization: str):
         super().__init__()
-        self.polarization = polarization
+        self.polarization = PolarizationFactory.create_polarization(polarization)

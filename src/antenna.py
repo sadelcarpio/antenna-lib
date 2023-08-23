@@ -3,6 +3,8 @@ from abc import abstractmethod, ABC
 
 class Antenna(ABC):
 
+    polarization = None
+
     @property
     def max_directivity(self):
         """Calcular directividad"""

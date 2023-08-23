@@ -1,9 +1,8 @@
-from src.antenna_parameters.params import Polarization
 from src.single_antennas.single import SingleAntenna
 
 
 class LoopAntenna(SingleAntenna):
-    def __init__(self, radius: float, polarization: Polarization = None):
+    def __init__(self, radius: float, polarization: str = 'linear@0'):
         super().__init__(polarization)
         self.radius = radius
 
