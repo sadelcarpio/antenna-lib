@@ -1,3 +1,5 @@
+import numpy as np
+
 from src.antenna import Antenna
 from src.array_antennas import AntennaArray
 from src.single_antennas import DipoleAntenna, LoopAntenna, SingleAntenna
@@ -19,4 +21,4 @@ def test_create_array_antenna():
     assert isinstance(arr_antenna, Antenna)
     assert len(arr_antenna.antennas) == 3
     assert hasattr(arr_antenna, 'polarization')
-    assert arr_antenna.polarization.pol_vector == 'â<0â<0â<0'
+    assert np.allclose(arr_antenna.polarization.pol_vector, np.array([3, 0]), 1e-6)

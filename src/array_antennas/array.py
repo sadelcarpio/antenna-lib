@@ -1,3 +1,5 @@
+import numpy as np
+
 from antenna_parameters.polarization import Polarization
 from src.antenna import Antenna
 
@@ -14,7 +16,7 @@ class AntennaArray(Antenna):
     def polarization(self):
         """Calcular la polarización resultante a partir de las antenas que conforman el array"""
         if self._polarization is None:
-            pol = Polarization('')
+            pol = Polarization(np.array([0, 0]))
             for antenna in self.antennas:
                 pol += antenna.polarization
             return pol
