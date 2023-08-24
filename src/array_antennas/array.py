@@ -16,10 +16,9 @@ class AntennaArray(Antenna):
     def polarization(self):
         """Calcular la polarización resultante a partir de las antenas que conforman el array"""
         if self._polarization is None:
-            pol = Polarization(np.array([0, 0]))
-            for antenna in self.antennas:
-                pol += antenna.polarization
-            return pol
+            pol = sum([antenna.amplitude * antenna.polarization.pol_vector for antenna in self.antennas])
+            self._polarization = Polarization(pol / np.linalg.norm(pol))
+            return self._polarization
         return self._polarization
 
     def directivity(self, angle):

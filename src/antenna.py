@@ -4,6 +4,7 @@ from abc import abstractmethod, ABC
 class Antenna(ABC):
 
     polarization = None
+    amplitude = None
 
     @property
     def max_directivity(self):

@@ -21,4 +21,5 @@ def test_create_array_antenna():
     assert isinstance(arr_antenna, Antenna)
     assert len(arr_antenna.antennas) == 3
     assert hasattr(arr_antenna, 'polarization')
-    assert np.allclose(arr_antenna.polarization.pol_vector, np.array([3, 0]), 1e-6)
+    assert np.allclose(arr_antenna.polarization.pol_vector, np.array([1, 0]), 1e-6)
+    assert arr_antenna.polarization.polarization_str == 'linear@0.0'

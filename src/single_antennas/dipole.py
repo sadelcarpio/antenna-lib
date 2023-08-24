@@ -2,8 +2,9 @@ from src.single_antennas.single import SingleAntenna
 
 
 class DipoleAntenna(SingleAntenna):
-    def __init__(self, length: float, polarization: str = 'linear@0'):
-        super().__init__(polarization)
+
+    def __init__(self, length: float, polarization: str = 'linear@0', amplitude: float = 1.0):
+        super().__init__(polarization, amplitude)
         self.length = length
 
     def directivity(self, angle):

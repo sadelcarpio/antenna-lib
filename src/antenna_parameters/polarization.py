@@ -4,11 +4,12 @@ from src.exceptions import InvalidPolarizationException
 
 
 class PolarizationFactory:
+    """Clase encargada de crear objetos de tipo Polarization"""
 
     @classmethod
-    def create_polarization(cls, polarization: str):
-        pol_vector = cls.parse_pol_vector(polarization)
-        return Polarization(pol_vector)
+    def create_polarization(cls, polarization_str: str):
+        pol_vector = cls.parse_pol_vector(polarization_str)
+        return Polarization(pol_vector, polarization_str)
 
     @classmethod
     def parse_pol_vector(cls, polarization) -> np.ndarray:
@@ -54,14 +55,27 @@ class PolarizationFactory:
 
 
 class Polarization:
-    def __init__(self, pol_vector: np.ndarray):
+    def __init__(self, pol_vector: np.ndarray, polarization_str: str = None):
+        """
+        Inicializa la clase Polarization, con un vector de polarización (unitario) y una representación
+        en string de su polarización.
+        :param pol_vector: Vector complejo unitario que representa la polarización de la onda transmitida de la antena.
+        :param polarization_str: Representación en string.
+        """
         self.pol_vector = pol_vector
+        self._polarization_str = polarization_str
 
     @property
-    def polarization_type(self):
-        """Logica para detectar el tipo de polarización basado en el vector de polarización"""
-        return
+    def polarization_str(self):
+        """Lógica para detectar el tipo de polarización basado en el vector de polarización.
+        Necesario para el uso con arreglos de antenas."""
+        if self._polarization_str is None:
+            if np.all(np.isreal(self.pol_vector)):
+                pol_type_str = 'linear'
+                pol_angle = round(float(np.arctan2(self.pol_vector[1], self.pol_vector[0]) * 180 / np.pi), 2)
+                self._polarization_str = f'{pol_type_str}@{pol_angle}'
+                return self._polarization_str
+        return self._polarization_str
 
-    def __add__(self, other):
-        pol_vector = self.pol_vector + other.pol_vector
-        return Polarization(pol_vector)
+    def __str__(self):
+        return f'<{self.polarization_str}, Polarization vector: {self.pol_vector.round(2)}>'

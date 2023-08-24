@@ -2,8 +2,9 @@ from src.single_antennas.single import SingleAntenna
 
 
 class LoopAntenna(SingleAntenna):
-    def __init__(self, radius: float, polarization: str = 'linear@0'):
-        super().__init__(polarization)
+
+    def __init__(self, radius: float, polarization: str = 'linear@0', amplitude: float = 1.0):
+        super().__init__(polarization, amplitude)
         self.radius = radius
 
     def directivity(self, angle):
