@@ -7,22 +7,48 @@ class PolarizationFactory:
 
     @classmethod
     def create_polarization(cls, polarization: str):
-        # logic is very bloated here
+        pol_vector = cls.parse_pol_vector(polarization)
+        return Polarization(pol_vector)
+
+    @classmethod
+    def parse_pol_vector(cls, polarization) -> np.ndarray:
         if polarization.startswith('linear'):
             try:
                 polarization_angle = float(polarization.split('@')[1]) * np.pi / 180
             except IndexError:
-                raise IndexError('Invalid parameter for linear polarization angle')
+                raise IndexError('Invalid parameter for linear polarization angle. Format is "linear@{angle}"')
             except ValueError:
                 raise ValueError('Please specify a valid float number as an angle')
-            pol_vector = np.array([1 * np.cos(polarization_angle), 1 * np.sin(polarization_angle)])
-            return Polarization(pol_vector)
-        elif polarization == 'circular':
-            pol_vector = np.array([1, -1j])  # [1, ij] for rcp
-            return Polarization(pol_vector)
-        elif polarization == 'elliptical':
-            pol_vector = np.array([1 + 1j, 1 - 1j])  # not really but let's pretend
-            return Polarization(pol_vector)
+            return np.array([1 * np.cos(polarization_angle), 1 * np.sin(polarization_angle)])
+        elif polarization.startswith('circular'):
+            try:
+                polarization_orientation = polarization.split('@')[1]
+                if polarization_orientation == 'lcp':
+                    return np.array([1, -1j]) / np.sqrt(2)
+                elif polarization_orientation == 'rcp':
+                    return np.array([1, 1j]) / np.sqrt(2)
+                else:
+                    raise InvalidPolarizationException('No valid Polarization. Valid parameters are '
+                                                       '"rcp", "lcp"')
+            except IndexError:
+                raise IndexError('Invalid parameter for circular polarization orientation. Format is '
+                                 'circular@{orientation}')
+        elif polarization.startswith('elliptical'):
+            try:
+                polarization_orientation = polarization.split('@')[1]
+                polarization_angle = float(polarization.split('@')[2]) * np.pi / 180
+                # define a vector, not unitary but easy to calculate for angle/orientation
+                if polarization_orientation == 'lcp':
+                    base_pol = np.array([1, np.exp(-1j * polarization_angle)])
+                elif polarization_orientation == 'rcp':
+                    base_pol = np.array([1, np.exp(1j * polarization_angle)])
+                else:
+                    raise InvalidPolarizationException('No valid Polarization. Valid parameters are '
+                                                       '"rcp", "lcp"')
+                return base_pol / np.linalg.norm(base_pol)  # normalize to get the unit vector
+            except IndexError:
+                raise IndexError('Invalid parameters for elliptical polarization. Format is '
+                                 'elliptical@{orientation}@{angle}')
         else:
             raise InvalidPolarizationException("No valid polarization")
 
