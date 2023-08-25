@@ -5,10 +5,8 @@ from src.antenna import Antenna
 
 
 class AntennaArray(Antenna):
-    def __init__(self, antennas: list[Antenna] = None):
+    def __init__(self, antennas: list[Antenna]):
         super().__init__()
-        if antennas is None:
-            antennas = []
         self.antennas = antennas
         self._polarization = None
 
@@ -22,13 +20,10 @@ class AntennaArray(Antenna):
         return self._polarization
 
     def directivity(self, angle):
-        # Implementation for this antenna type
-        pass
+        """Implementation for this antenna type"""
 
     def plot_radiation_pattern(self):
-        # Implementation for this antenna type
-        pass
+        """Implementation for this antenna type"""
 
     def play_wave_animation(self):
-        # Implementation for this antenna type
-        pass
+        """Implementation for this antenna type"""

@@ -8,13 +8,10 @@ class LoopAntenna(SingleAntenna):
         self.radius = radius
 
     def directivity(self, angle):
-        # Implementation for this antenna type
-        pass
+        """Implementation for this antenna type"""
 
     def plot_radiation_pattern(self):
-        # Implementation for this antenna type
-        pass
+        """Implementation for this antenna type"""
 
     def play_wave_animation(self):
-        # Implementation for this antenna type
-        pass
+        """Implementation for this antenna type"""
