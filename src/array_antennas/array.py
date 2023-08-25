@@ -1,6 +1,6 @@
 import numpy as np
 
-from antenna_parameters.polarization import Polarization
+from src.antenna_parameters import Polarization
 from src.antenna import Antenna
 
 

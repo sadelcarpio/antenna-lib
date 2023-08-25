@@ -1,7 +1,7 @@
 from abc import ABC
 
 from src.antenna import Antenna
-from src.antenna_parameters.polarization import PolarizationFactory
+from src.antenna_parameters import PolarizationFactory
 
 
 class SingleAntenna(Antenna, ABC):
