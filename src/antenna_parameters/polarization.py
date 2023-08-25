@@ -35,21 +35,8 @@ class PolarizationFactory:
                 raise IndexError('Invalid parameter for circular polarization orientation. Format is '
                                  'circular@{orientation}')
         elif polarization.startswith('elliptical'):
-            try:
-                polarization_orientation = polarization.split('@')[1]
-                polarization_angle = float(polarization.split('@')[2]) * np.pi / 180
-                # define a vector, not unitary but easy to calculate for angle/orientation
-                if polarization_orientation == 'lcp':
-                    base_pol = np.array([1, np.exp(-1j * polarization_angle)])
-                elif polarization_orientation == 'rcp':
-                    base_pol = np.array([1, np.exp(1j * polarization_angle)])
-                else:
-                    raise InvalidPolarizationException('No valid Polarization. Valid parameters are '
-                                                       '"rcp", "lcp"')
-                return base_pol / np.linalg.norm(base_pol)  # normalize to get the unit vector
-            except IndexError:
-                raise IndexError('Invalid parameters for elliptical polarization. Format is '
-                                 'elliptical@{orientation}@{angle}')
+            pass
+            # TODO: Study poincare sphere and angles delta, tau, gamma
         else:
             raise InvalidPolarizationException("No valid polarization")
 
