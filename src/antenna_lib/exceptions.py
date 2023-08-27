@@ -1,0 +1,2 @@
+class InvalidPolarizationException(Exception):
+    pass
