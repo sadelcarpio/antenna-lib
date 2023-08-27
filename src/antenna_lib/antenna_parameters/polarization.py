@@ -74,6 +74,7 @@ class PolarizationFactory:
                 orientation = polarization.split('@')[1]
                 ar = float(polarization.split('@')[2])
                 tau = float(polarization.split('@')[3]) * np.pi / 180
+
                 if orientation not in ['rcp', 'lcp']:
                     raise InvalidPolarizationException('No valid Polarization orientation. Valid parameters are '
                                                        '"rcp", "lcp"')
