@@ -18,7 +18,23 @@ class Polarization:
     def polarization_str(self):
         """Lógica para detectar el tipo de polarización basado en el vector de polarización.
         Necesario para el uso con arreglos de antenas."""
-        # TODO: establecer lógica para implementar
+        if self._polarization_str is None:
+            # Remember pol_vector has the form: x * E_x * exp(j * phi_x) + y * E_y * exp(j * phi_y)
+            y_over_x = self.pol_vector[1] / self.pol_vector[0]
+            if np.isreal(y_over_x):
+                # it's linear
+                return f'linear@{np.arctan(y_over_x) * 180 / np.pi}'
+            elif np.isclose(y_over_x, 1j) or np.isclose(y_over_x, -1j):
+                # it's circular
+                return f'circular@{"rcp" if np.isclose(y_over_x, 1j) else "lcp"}'
+            else:
+                # it's elliptical
+                gamma = np.arctan(np.abs(y_over_x))
+                delta = np.angle(y_over_x)
+                epsilon = np.arcsin(np.sin(2 * gamma) * np.sin(delta)) / 2
+                ar = (1 if delta > 0 else -1) / np.tan(epsilon)
+                tau = np.arctan(np.tan(2 * gamma) * np.cos(delta)) / 2
+                return f'elliptical@{"rcp" if delta > 0 else "lcp"}@{round(ar, 2)}@{round(tau * 180 / np.pi, 2)}'
         return self._polarization_str
 
     def __str__(self):
@@ -57,7 +73,7 @@ class PolarizationFactory:
             try:
                 orientation = polarization.split('@')[1]
                 ar = float(polarization.split('@')[2])
-                tau = float(polarization.split('@')[3])
+                tau = float(polarization.split('@')[3]) * np.pi / 180
                 if orientation not in ['rcp', 'lcp']:
                     raise InvalidPolarizationException('No valid Polarization orientation. Valid parameters are '
                                                        '"rcp", "lcp"')
@@ -68,7 +84,7 @@ class PolarizationFactory:
                 cos_2gamma = np.cos(2 * epsilon) * np.cos(2 * tau)
                 gamma = np.arccos(cos_2gamma) / 2
                 ey_ex = np.tan(gamma)
-                pol = np.array([1, ey_ex * np.exp(1j * delta if orientation == 'rcp' else -1j * delta)])
+                pol = np.array([1, ey_ex * np.exp(1j * delta)])
                 return pol / np.linalg.norm(pol)
             except IndexError:
                 raise IndexError('Invalid parameter for elliptical polarization. Format is '

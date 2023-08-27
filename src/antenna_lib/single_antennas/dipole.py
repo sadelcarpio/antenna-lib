@@ -1,4 +1,3 @@
-from antenna_lib.antenna_parameters.params import Polarization
 from antenna_lib.single_antennas.single import SingleAntenna
 
 
