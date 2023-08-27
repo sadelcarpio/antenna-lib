@@ -1,8 +1,8 @@
 import numpy as np
 
-from src.antenna import Antenna
-from src.array_antennas import AntennaArray
-from src.single_antennas import DipoleAntenna, LoopAntenna, SingleAntenna
+from antenna_lib.antenna import Antenna
+from antenna_lib.array_antennas import AntennaArray
+from antenna_lib.single_antennas import DipoleAntenna, LoopAntenna, SingleAntenna
 
 
 def test_create_single_antenna():

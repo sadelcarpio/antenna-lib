@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.exceptions import InvalidPolarizationException
+from antenna_lib.exceptions import InvalidPolarizationException
 
 
 class Polarization:

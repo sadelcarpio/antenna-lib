@@ -1,7 +1,7 @@
 import numpy as np
 
-from src.antenna_parameters import Polarization
-from src.antenna import Antenna
+from antenna_lib.antenna_parameters import Polarization
+from antenna_lib.antenna import Antenna
 
 
 class AntennaArray(Antenna):

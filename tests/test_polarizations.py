@@ -1,8 +1,8 @@
 import numpy as np
 import pytest
 
-from src.antenna_parameters import PolarizationFactory
-from src.exceptions import InvalidPolarizationException
+from antenna_lib.antenna_parameters import PolarizationFactory
+from antenna_lib.exceptions import InvalidPolarizationException
 
 
 def test_polarization_factory():

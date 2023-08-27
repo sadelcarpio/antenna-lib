@@ -1,11 +1,11 @@
-from src.single_antennas.single import SingleAntenna
+from antenna_lib.single_antennas.single import SingleAntenna
 
 
-class DipoleAntenna(SingleAntenna):
+class LoopAntenna(SingleAntenna):
 
-    def __init__(self, length: float, polarization: str = 'linear@0', amplitude: float = 1.0):
+    def __init__(self, radius: float, polarization: str = 'linear@0', amplitude: float = 1.0):
         super().__init__(polarization, amplitude)
-        self.length = length
+        self.radius = radius
 
     def directivity(self, angle):
         """Implementation for this antenna type"""
