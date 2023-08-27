@@ -15,8 +15,8 @@ def test_create_single_antenna():
 
 
 def test_create_array_antenna():
-    dipoles = [LoopAntenna(radius=1.2) for _ in range(3)]
-    arr_antenna = AntennaArray(dipoles)
+    loops = [LoopAntenna(radius=1.2) for _ in range(3)]
+    arr_antenna = AntennaArray(loops)
     assert isinstance(arr_antenna, AntennaArray)
     assert isinstance(arr_antenna, Antenna)
     assert len(arr_antenna.antennas) == 3
