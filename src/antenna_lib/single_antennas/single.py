@@ -1,5 +1,5 @@
-from src.antenna_parameters.params import Polarization
-from src.antenna import Antenna
+from antenna_lib.antenna_parameters.params import Polarization
+from antenna_lib.antenna import Antenna
 
 
 class SingleAntenna(Antenna):

@@ -1,4 +1,4 @@
-from src.antenna import Antenna
+from antenna_lib.antenna import Antenna
 
 
 class AntennaArray(Antenna):
