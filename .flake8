@@ -1,8 +1,0 @@
-[flake8]
-exclude =
-    venv
-    .venv
-    __pycache__
-max-line-length = 120
-per-file-ignores =
-    test_*.py: F841

@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "antenna-lib"
+version = "0.0.1"
+description = "Librería para diseño y visualización de antenas y sus parámetros"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {file = "LICENSE"}
+keywords = ["antenna", "design"]
+authors = [{name = "Sergio Del Carpio", email = "sadelcarpioa@gmail.com"}]
+maintainers = [{name = "Sergio Del Carpio", email = "sadelcarpioa@gmail.com"}]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11"
+]
+dependencies = [
+    "numpy~=1.25.2",
+    "matplotlib~=3.7.2",
+]
+
+[project.urls]
+Repository = "https://github.com/sadelcarpio/antenna-lib"
+
+[project.optional-dependencies]
+dev = [
+    "pytest~=7.4.0",
+    "coverage~=7.3.0",
+    "flake8~=6.1.0",
+    "build~=0.10.0",
+    "twine~=4.0.2",
+]
+
+[tool.flake8]
+exclude = [
+    "venv",
+    ".venv",
+    "__pycache__",
+]
+max-line-length = 120
+per-file-ignores = [
+    "test_*.py: F841"
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests", "venv", ".venv", "__pycache__"]

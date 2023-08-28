@@ -1,3 +1,11 @@
+-r requirements.txt
+# Testing libraries
 pytest~=7.4.0
-flake8~=6.1.0
 coverage~=7.3.0
+
+# Linting
+flake8~=6.1.0
+
+# building and publishing to pypi
+build~=0.10.0
+twine~=4.0.2

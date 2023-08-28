@@ -40,6 +40,9 @@ class Polarization:
     def __str__(self):
         return f'<{self.polarization_str}, Polarization vector: {self.pol_vector.round(2)}>'
 
+    def __repr__(self):
+        return self.__str__()
+
 
 class PolarizationFactory:
     """Clase encargada de crear objetos de tipo Polarization"""
