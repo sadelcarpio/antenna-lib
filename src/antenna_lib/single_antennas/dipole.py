@@ -1,6 +1,4 @@
-import matplotlib.pyplot as plt
 import numpy as np
-from functools import partial
 
 from antenna_lib.antenna_parameters import PolarizationFactory
 from antenna_lib.single_antennas.single import SingleAntenna

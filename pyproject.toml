@@ -37,17 +37,6 @@ dev = [
     "twine~=4.0.2",
 ]
 
-[tool.flake8]
-exclude = [
-    "venv",
-    ".venv",
-    "__pycache__",
-]
-max-line-length = 120
-per-file-ignores = [
-    "test_*.py: F841"
-]
-
 [tool.coverage.run]
 source = ["src"]
 omit = ["tests", "venv", ".venv", "__pycache__"]
