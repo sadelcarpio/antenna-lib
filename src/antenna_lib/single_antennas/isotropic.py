@@ -10,7 +10,7 @@ class IsotropicAntenna(SingleAntenna):
         super().__init__(amplitude)
         self.polarization = PolarizationFactory.create_polarization(polarization)
 
-    @@property
+    @property
     def max_directivity(self):
         return 1.0
 
