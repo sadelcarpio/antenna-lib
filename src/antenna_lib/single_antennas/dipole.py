@@ -1,16 +1,26 @@
+from __future__ import annotations
+
 import numpy as np
 
 from antenna_lib.antenna_parameters import PolarizationFactory
 from antenna_lib.single_antennas.single import SingleAntenna
+from antenna_lib.utils.decorators import rotable
 
 
 class DipoleAntenna(SingleAntenna):
 
-    def __init__(self, length: float, angle: float = 0.0, amplitude: float = 1.0):
+    def __init__(self, length: float, pol: float | str = 0.0, amplitude: float = 1.0):
         super().__init__(amplitude)
         self.length = length
-        self.angle = angle * np.pi / 180
-        self.polarization = PolarizationFactory.create_polarization(f'linear@{angle}')
+        if isinstance(pol, str):
+            if pol == 'horizontal':
+                pol = 90.0
+            elif pol == 'vertical':
+                pol = 0.0
+            else:
+                raise ValueError('Invalid polarization string')
+        self.angle = pol * np.pi / 180
+        self.polarization = PolarizationFactory.create_polarization(f'linear@{pol}')
 
     @property
     def max_directivity(self):
@@ -24,24 +34,15 @@ class DipoleAntenna(SingleAntenna):
         else:
             return self.directivity(np.pi / 2 - self.angle)
 
+    @rotable
     def directivity(self, theta, phi=0.0):
         """Implementation for this antenna type"""
-        tilt = self.angle
         kl = 2 * self.length
         # Falta la superconstante D0
         if self.length <= 0.1:
-            r = lambda theta, phi: 1.5 * np.sin(theta) ** 2
-        else:
-            r = lambda theta, phi: ((np.cos(np.pi * kl / 2 * np.cos(theta)) - np.cos(
-                np.pi * kl / 2)) / np.sin(theta)) ** 2
-        r_prime = lambda theta, phi: r(theta + tilt, phi)
-        x_prime = lambda theta, phi: r_prime(theta, phi) * np.sin(theta) * np.cos(phi)
-        y_prime = lambda theta, phi: r_prime(theta, phi) * np.sin(theta) * np.sin(phi)
-        z_prime = lambda theta, phi: r_prime(theta, phi) * np.cos(theta)
-        x = x_prime
-        y = lambda theta, phi: y_prime(theta, phi) * np.cos(tilt) - z_prime(theta, phi) * np.sin(tilt)
-        z = lambda theta, phi: z_prime(theta, phi) * np.cos(tilt) + y_prime(theta, phi) * np.sin(tilt)
-        return np.linalg.norm(np.array([x(theta, phi), y(theta, phi), z(theta, phi)]))
+            return 1.5 * np.sin(theta) ** 2
+        return ((np.cos(np.pi * kl / 2 * np.cos(theta)) - np.cos(
+            np.pi * kl / 2)) / np.sin(theta)) ** 2
 
     def play_wave_animation(self):
         """Implementation for this antenna type"""

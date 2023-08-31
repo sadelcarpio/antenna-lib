@@ -6,7 +6,7 @@ from antenna_lib.single_antennas import DipoleAntenna, LoopAntenna, SingleAntenn
 
 
 def test_create_single_antenna():
-    dipole = DipoleAntenna(length=0.5, angle=0.0)
+    dipole = DipoleAntenna(length=0.5, pol=0.0)
     assert isinstance(dipole, DipoleAntenna)
     assert isinstance(dipole, SingleAntenna)
     assert isinstance(dipole, Antenna)
