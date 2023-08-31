@@ -4,7 +4,7 @@ import pytest
 from antenna_lib.antenna_parameters import PolarizationFactory
 from antenna_lib.array_antennas import AntennaArray
 from antenna_lib.exceptions import InvalidPolarizationException
-from antenna_lib.single_antennas import DipoleAntenna
+from antenna_lib.single_antennas.isotropic import IsotropicAntenna
 
 
 def test_polarization_factory():
@@ -64,7 +64,7 @@ def test_invalid_polarizations_elliptical():
 @pytest.mark.parametrize('pol, pol_vector', [('linear@0.0', [1, 0]), ('circular@rcp', [0.7071068, 0.7071068j]),
                                              ('elliptical@rcp@1.5@45.0', [0.70710678, 0.27196415 + 0.65271395j])])
 def test_array_polarization_str(pol, pol_vector):
-    antennas = [DipoleAntenna(length=0.5, polarization=pol) for _ in range(3)]
+    antennas = [IsotropicAntenna(polarization=pol) for _ in range(3)]
     arr_antenna = AntennaArray(antennas)
     assert np.allclose(arr_antenna.polarization.pol_vector, np.array(pol_vector), 1e-6)
     assert arr_antenna.polarization.polarization_str == pol

@@ -19,10 +19,10 @@ class AntennaArray(Antenna):
             return self._polarization
         return self._polarization
 
-    def directivity(self, angle):
+    def directivity(self, theta, phi):
         """Implementation for this antenna type"""
 
-    def plot_radiation_pattern(self):
+    def plot_radiation_pattern(self, plot_type='polar', field=False):
         """Implementation for this antenna type"""
 
     def play_wave_animation(self):
