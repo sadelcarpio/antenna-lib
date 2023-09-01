@@ -3,7 +3,7 @@ from functools import wraps
 import numpy as np
 
 
-def rotable(r):
+def rotatory(r):
     """
     Decorador que permite rotar cualquier patron de radiación sobre el eje x.
     :param r: directivity method

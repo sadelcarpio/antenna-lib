@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abc import ABC
 from functools import partial
 
@@ -5,18 +7,36 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 from antenna_lib.antenna import Antenna
+from antenna_lib.antenna_parameters import PolarizationFactory
+from antenna_lib.utils.decorators import rotatory
 
 
 class SingleAntenna(Antenna, ABC):
 
-    def __init__(self, amplitude: float):
+    def __init__(self, pol: str | float = 0.0, amplitude: float = 1.0):
         super().__init__()
         self.amplitude = amplitude
+        if isinstance(pol, str):
+            if pol == 'horizontal':
+                pol = 90.0
+            elif pol == 'vertical':
+                pol = 0.0
+            else:
+                raise ValueError('Invalid polarization string')
+        self.angle = pol * np.pi / 180
+        self.polarization = PolarizationFactory.create_polarization(f'linear@{pol}')
+
+    def directivity(self, theta: float, phi: float):
+        pass
+
+    @rotatory
+    def _directivity(self, theta: float, phi: float):
+        return self.directivity(theta, phi)
 
     def _horizontal_vertical_patterns(self, theta: np.ndarray, phi: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-        horizontal = np.array(list(map(partial(self.directivity, np.pi / 2), phi)))
-        vertical = np.array(list(map(partial(self.directivity, phi=0.0), theta[:500])) +
-                            list(map(partial(self.directivity, phi=np.pi), theta[500:])))
+        horizontal = np.array(list(map(partial(self._directivity, np.pi / 2), phi)))
+        vertical = np.array(list(map(partial(self._directivity, phi=0.0), theta[:500])) +
+                            list(map(partial(self._directivity, phi=np.pi), theta[500:])))
         horizontal[np.isnan(horizontal)] = 0.0
         vertical[np.isnan(vertical)] = 0.0
         return horizontal, vertical
@@ -25,6 +45,8 @@ class SingleAntenna(Antenna, ABC):
         phi = np.linspace(0, 2 * np.pi, 1000)
         theta = np.linspace(0, 2 * np.pi, 1000)
         horizontal, vertical = self._horizontal_vertical_patterns(theta, phi)
+        if field:
+            horizontal, vertical = np.sqrt(horizontal), np.sqrt(vertical)
         h_plane = plt.subplot(1, 2, 1, projection='polar')
         h_plane.set_theta_zero_location('N')
         h_plane.set_theta_direction(-1)
