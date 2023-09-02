@@ -29,11 +29,12 @@ class SingleAntenna(Antenna, ABC):
         self._radiated_power = None
 
     def field_pattern(self, theta: float, phi: float) -> float:
+        """Patrón de campo. Propiedad a partir de la cual se obtienen muchas de las características de la antena"""
         pass
 
     @rotatory
     def _field_pattern(self, theta: float, phi: float) -> float:
-        """Patrón de campo. Propiedad a partid de la cual se obtienen muchas de las características de la antena"""
+        """Patrón de campo con posibilidad de rotar debdo al decorador `@rotatory`"""
         return self.amplitude * self.field_pattern(theta, phi)
 
     def _power_pattern(self, theta: float, phi: float = 0.0) -> float:
