@@ -84,3 +84,17 @@ class SingleAntenna(Antenna, ABC):
         v_plane.set_theta_direction(-1)
         plt.polar(theta, vertical)
         plt.show()
+
+    def plot_3d_pattern(self, field=False):
+        """Gráfico 3d del patrón de radiación."""
+        theta, phi = np.meshgrid(np.linspace(0, np.pi, 100), np.linspace(0, 2 * np.pi, 100))
+        r_prime = np.vectorize(self.field_pattern)(theta, phi) ** (1 if field else 2)
+        x_prime = r_prime * np.sin(theta) * np.cos(phi)
+        Y_prime = r_prime * np.sin(theta) * np.sin(phi)
+        Z_prime = r_prime * np.cos(theta)
+        X = x_prime
+        Y = Y_prime * np.cos(self.angle) - Z_prime * np.sin(self.angle)
+        Z = Z_prime * np.cos(self.angle) + Y_prime * np.sin(self.angle)
+        fig, ax = plt.subplots(subplot_kw={'projection': '3d'})
+        ax.plot_surface(X, Y, Z, alpha=0.8, rstride=1, cstride=1, linewidth=0)
+        plt.show()
