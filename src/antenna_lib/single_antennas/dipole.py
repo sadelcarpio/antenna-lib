@@ -17,9 +17,7 @@ class DipoleAntenna(SingleAntenna):
         if self.length <= 0.1:
             return 1.5
         elif self.length >= 1.0:
-            phi = np.linspace(0, 2 * np.pi, 1000)
-            theta = np.linspace(0, 2 * np.pi, 1000)
-            return np.max(self._horizontal_vertical_patterns(theta, phi)[1])
+            return super().max_directivity()
         else:
             return self.directivity(np.pi / 2 - self.angle, 0.0)
 

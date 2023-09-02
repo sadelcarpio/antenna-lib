@@ -65,7 +65,7 @@ class SingleAntenna(Antenna, ABC):
         horizontal = np.array(list(map(partial(self.power_pattern, np.pi / 2), phi)))
         vertical = np.array(list(map(partial(self.power_pattern, phi=0.0), theta[:500])) +
                             list(map(partial(self.power_pattern, phi=np.pi), theta[500:])))
-        return horizontal / np.max(horizontal), vertical / np.max(vertical)
+        return horizontal, vertical
 
     def plot_radiation_pattern(self, plot_type='polar', field=False):
         phi = np.linspace(0, 2 * np.pi, 1000)
@@ -73,6 +73,8 @@ class SingleAntenna(Antenna, ABC):
         horizontal, vertical = self._horizontal_vertical_patterns(theta, phi)
         if field:
             horizontal, vertical = np.sqrt(horizontal), np.sqrt(vertical)
+        horizontal /= np.max(horizontal)
+        vertical /= np.max(vertical)
         h_plane = plt.subplot(1, 2, 1, projection='polar')
         h_plane.set_theta_zero_location('N')
         h_plane.set_theta_direction(-1)
