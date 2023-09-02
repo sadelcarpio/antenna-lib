@@ -37,7 +37,7 @@ class SingleAntenna(Antenna, ABC):
         """Patrón de campo con posibilidad de rotar debdo al decorador `@rotatory`"""
         return self.amplitude * self.field_pattern(theta, phi)
 
-    def _power_pattern(self, theta: float, phi: float = 0.0) -> float:
+    def power_pattern(self, theta: float, phi: float = 0.0) -> float:
         """Patrón de potencia, cuadrado del patrón de campo"""
         return self._field_pattern(theta, phi) ** 2
 
@@ -52,7 +52,7 @@ class SingleAntenna(Antenna, ABC):
 
     def directivity(self, theta: float, phi: float = 0.0) -> float:
         """Función directividad calculada a partir del patrón de potencia y la potencia radiada"""
-        return 4 * np.pi * self._power_pattern(theta, phi) / self.radiated_power
+        return 4 * np.pi * self.power_pattern(theta, phi) / self.radiated_power
 
     @property
     def max_directivity(self):
@@ -62,9 +62,9 @@ class SingleAntenna(Antenna, ABC):
         return np.max(self._horizontal_vertical_patterns(theta, phi))
 
     def _horizontal_vertical_patterns(self, theta: np.ndarray, phi: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-        horizontal = np.array(list(map(partial(self._power_pattern, np.pi / 2), phi)))
-        vertical = np.array(list(map(partial(self._power_pattern, phi=0.0), theta[:500])) +
-                            list(map(partial(self._power_pattern, phi=np.pi), theta[500:])))
+        horizontal = np.array(list(map(partial(self.power_pattern, np.pi / 2), phi)))
+        vertical = np.array(list(map(partial(self.power_pattern, phi=0.0), theta[:500])) +
+                            list(map(partial(self.power_pattern, phi=np.pi), theta[500:])))
         return horizontal / np.max(horizontal), vertical / np.max(vertical)
 
     def plot_radiation_pattern(self, plot_type='polar', field=False):
