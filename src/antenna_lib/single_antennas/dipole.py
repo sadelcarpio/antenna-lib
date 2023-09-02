@@ -3,7 +3,6 @@ from __future__ import annotations
 import numpy as np
 
 from antenna_lib.single_antennas.single import SingleAntenna
-from antenna_lib.utils.decorators import rotatory
 
 
 class DipoleAntenna(SingleAntenna):
@@ -22,15 +21,14 @@ class DipoleAntenna(SingleAntenna):
             theta = np.linspace(0, 2 * np.pi, 1000)
             return np.max(self._horizontal_vertical_patterns(theta, phi)[1])
         else:
-            return self.directivity(np.pi / 2 - self.angle)
+            return self.directivity(np.pi / 2 - self.angle, 0.0)
 
-    def directivity(self, theta, phi=0.0):
-        """Implementation for this antenna type"""
+    def field_pattern(self, theta, phi=0.0):
         kl = 2 * self.length
-        # Falta la superconstante D0, o hallar la directividad del patron de potencia
         if self.length <= 0.1:
-            return 1.5 * np.sin(theta) ** 2
-        return ((np.cos(np.pi * kl / 2 * np.cos(theta)) - np.cos(np.pi * kl / 2)) / np.sin(theta)) ** 2
+            return np.sin(theta)
+        e = ((np.cos(np.pi * kl / 2 * np.cos(theta)) - np.cos(np.pi * kl / 2)) / np.sin(theta))
+        return 0.0 if np.isnan(e) else e
 
     def play_wave_animation(self):
         """Implementation for this antenna type"""

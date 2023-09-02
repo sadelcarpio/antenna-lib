@@ -4,6 +4,7 @@ from abc import ABC
 from functools import partial
 
 import numpy as np
+from scipy.integrate import dblquad
 from matplotlib import pyplot as plt
 
 from antenna_lib.antenna import Antenna
@@ -25,21 +26,45 @@ class SingleAntenna(Antenna, ABC):
                 raise ValueError('Invalid polarization string')
         self.angle = pol * np.pi / 180
         self.polarization = PolarizationFactory.create_polarization(f'linear@{pol}')
+        self._radiated_power = None
 
-    def directivity(self, theta: float, phi: float):
+    def field_pattern(self, theta: float, phi: float) -> float:
         pass
 
     @rotatory
-    def _directivity(self, theta: float, phi: float):
-        return self.directivity(theta, phi)
+    def _field_pattern(self, theta: float, phi: float) -> float:
+        """Patrón de campo. Propiedad a partid de la cual se obtienen muchas de las características de la antena"""
+        return self.amplitude * self.field_pattern(theta, phi)
+
+    def _power_pattern(self, theta: float, phi: float = 0.0) -> float:
+        """Patrón de potencia, cuadrado del patrón de campo"""
+        return self._field_pattern(theta, phi) ** 2
+
+    @property
+    def radiated_power(self):
+        """Potencia radiada en todas las direcciones"""
+        if self._radiated_power is None:
+            f = lambda t, p: (self.field_pattern(t, p) ** 2) * np.sin(t)
+            d_0 = dblquad(f, 0, 2 * np.pi, 0, np.pi)[0]
+            return d_0
+        return self._radiated_power
+
+    def directivity(self, theta: float, phi: float = 0.0) -> float:
+        """Función directividad calculada a partir del patrón de potencia y la potencia radiada"""
+        return 4 * np.pi * self._power_pattern(theta, phi) / self.radiated_power
+
+    @property
+    def max_directivity(self):
+        """Implementación por defecto de la directividad máxima"""
+        phi = np.linspace(0, 2 * np.pi, 1000)
+        theta = np.linspace(0, 2 * np.pi, 1000)
+        return np.max(self._horizontal_vertical_patterns(theta, phi))
 
     def _horizontal_vertical_patterns(self, theta: np.ndarray, phi: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-        horizontal = np.array(list(map(partial(self._directivity, np.pi / 2), phi)))
-        vertical = np.array(list(map(partial(self._directivity, phi=0.0), theta[:500])) +
-                            list(map(partial(self._directivity, phi=np.pi), theta[500:])))
-        horizontal[np.isnan(horizontal)] = 0.0
-        vertical[np.isnan(vertical)] = 0.0
-        return horizontal, vertical
+        horizontal = np.array(list(map(partial(self._power_pattern, np.pi / 2), phi)))
+        vertical = np.array(list(map(partial(self._power_pattern, phi=0.0), theta[:500])) +
+                            list(map(partial(self._power_pattern, phi=np.pi), theta[500:])))
+        return horizontal / np.max(horizontal), vertical / np.max(vertical)
 
     def plot_radiation_pattern(self, plot_type='polar', field=False):
         phi = np.linspace(0, 2 * np.pi, 1000)
