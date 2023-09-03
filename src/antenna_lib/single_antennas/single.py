@@ -1,18 +1,18 @@
 from __future__ import annotations
 
-from abc import ABC
 from functools import partial
 
 import numpy as np
-from scipy.integrate import dblquad
 from matplotlib import pyplot as plt
+from scipy.integrate import dblquad
 
 from antenna_lib.antenna import Antenna
 from antenna_lib.antenna_parameters import PolarizationFactory
+from antenna_lib.exceptions import FieldPatternNotImplementedException
 from antenna_lib.utils.decorators import rotatory
 
 
-class SingleAntenna(Antenna, ABC):
+class SingleAntenna(Antenna):
 
     def __init__(self, pol: str | float = 0.0, amplitude: float = 1.0):
         super().__init__()
@@ -30,12 +30,16 @@ class SingleAntenna(Antenna, ABC):
 
     def field_pattern(self, theta: float, phi: float) -> float:
         """Patrón de campo. Propiedad a partir de la cual se obtienen muchas de las características de la antena"""
-        pass
+        raise NotImplementedError()
 
     @rotatory
     def _field_pattern(self, theta: float, phi: float) -> float:
         """Patrón de campo con posibilidad de rotar debdo al decorador `@rotatory`"""
-        return self.amplitude * self.field_pattern(theta, phi)
+        try:
+            return self.amplitude * self.field_pattern(theta, phi)
+        except NotImplementedError:
+            raise FieldPatternNotImplementedException('The antenna does not have a `field_pattern`'
+                                                      ' method implemented')
 
     def power_pattern(self, theta: float, phi: float = 0.0) -> float:
         """Patrón de potencia, cuadrado del patrón de campo"""
@@ -98,3 +102,6 @@ class SingleAntenna(Antenna, ABC):
         fig, ax = plt.subplots(subplot_kw={'projection': '3d'})
         ax.plot_surface(X, Y, Z, alpha=0.8, rstride=1, cstride=1, linewidth=0)
         plt.show()
+
+    def play_wave_animation(self):
+        pass
