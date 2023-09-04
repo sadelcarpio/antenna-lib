@@ -31,7 +31,7 @@ def test_dipole_max_directivity(dip_length, max_directivity):
 
 def test_dipole_field_pattern():
     shortwave_dipole = DipoleAntenna(0.01)
-    for theta in np.linspace(0, 2 * np.pi, 10):
+    for theta in np.linspace(0, np.pi, 10):
         assert pytest.approx(shortwave_dipole.field_pattern(theta)) == np.sin(theta)
     halfwave_dipole = DipoleAntenna(0.5)
     assert pytest.approx(halfwave_dipole.field_pattern(0.0)) == 0.0

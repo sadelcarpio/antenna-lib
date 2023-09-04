@@ -20,22 +20,14 @@ class SingleAntenna(Antenna):
         self.polarization = PolarizationFactory.create_polarization(f'linear@{pol}')
         self._radiated_power = None
 
-    def field_pattern(self, theta: float, phi: float) -> float:
+    def field_pattern(self, theta: float, phi: float = 0.0) -> float:
         """Patrón de campo. Propiedad a partir de la cual se obtienen muchas de las características de la antena"""
-        raise NotImplementedError()
+        raise FieldPatternNotImplementedException('The antenna does not have a `field_pattern`'
+                                                  ' method implemented')
 
-    @rotatory
-    def _field_pattern(self, theta: float, phi: float) -> float:
-        """Patrón de campo con posibilidad de rotar debdo al decorador `@rotatory`"""
-        try:
-            return self.amplitude * self.field_pattern(theta, phi)
-        except NotImplementedError:
-            raise FieldPatternNotImplementedException('The antenna does not have a `field_pattern`'
-                                                      ' method implemented')
-
-    def power_pattern(self, theta: float, phi: float) -> float:
+    def power_pattern(self, theta: float, phi: float = 0.0) -> float:
         """Patrón de potencia, cuadrado del patrón de campo"""
-        return self._field_pattern(theta, phi) ** 2
+        return self.field_pattern(theta, phi) ** 2
 
     @property
     def radiated_power(self):

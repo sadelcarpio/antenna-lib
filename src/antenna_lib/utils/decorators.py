@@ -10,7 +10,7 @@ def rotatory(r):
     :return: rotated function
     """
     @wraps(r)
-    def wrapper(self, theta, phi):
+    def wrapper(self, theta: float, phi: float = 0.0):
         x_prime = lambda theta, phi: r(self, theta, phi) * np.sin(theta) * np.cos(phi)
         y_prime = lambda theta, phi: r(self, theta, phi) * np.sin(theta) * np.sin(phi)
         z_prime = lambda theta, phi: r(self, theta, phi) * np.cos(theta)

@@ -3,6 +3,7 @@ from __future__ import annotations
 import numpy as np
 
 from antenna_lib.single_antennas.single import SingleAntenna
+from antenna_lib.utils.decorators import rotatory
 
 
 class DipoleAntenna(SingleAntenna):
@@ -31,7 +32,8 @@ class DipoleAntenna(SingleAntenna):
         else:
             return self.directivity(np.pi / 2 - self.angle, 0.0)
 
-    def field_pattern(self, theta, phi=0.0):
+    @rotatory
+    def field_pattern(self, theta: float, phi: float = 0.0) -> float:
         kl = 2 * self.length
         if self.length <= 0.1:
             return np.sin(theta)
