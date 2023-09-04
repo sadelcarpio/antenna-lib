@@ -14,8 +14,8 @@ class IsotropicAntenna(SingleAntenna):
     def max_directivity(self) -> float:
         return 1.0
 
-    def _field_pattern(self, theta: float, phi: float = 0.0) -> float:
-        """Patrón de campo de antena insotropica. No es necesario rotarlo."""
+    def field_pattern(self, theta: float, phi: float = 0.0) -> float:
+        """Patrón de campo de antena insotropica."""
         return 1.0
 
     def play_wave_animation(self):

@@ -50,8 +50,7 @@ class SingleAntenna(Antenna):
         """Potencia radiada en todas las direcciones"""
         if self._radiated_power is None:
             f = lambda t, p: (self.field_pattern(t, p) ** 2) * np.sin(t)
-            d_0 = dblquad(f, 0, 2 * np.pi, 0, np.pi)[0]
-            return d_0
+            self._radiated_power = dblquad(f, 0, 2 * np.pi, 0, np.pi)[0]
         return self._radiated_power
 
     def directivity(self, theta: float, phi: float = 0.0) -> float:
@@ -66,9 +65,9 @@ class SingleAntenna(Antenna):
         return np.max(self._horizontal_vertical_patterns(theta, phi))
 
     def _horizontal_vertical_patterns(self, theta: np.ndarray, phi: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-        horizontal = np.array(list(map(partial(self.power_pattern, np.pi / 2), phi)))
-        vertical = np.array(list(map(partial(self.power_pattern, phi=0.0), theta[:500])) +
-                            list(map(partial(self.power_pattern, phi=np.pi), theta[500:])))
+        horizontal = np.array(list(map(partial(self.directivity, np.pi / 2), phi)))
+        vertical = np.array(list(map(partial(self.directivity, phi=0.0), theta[:500])) +
+                            list(map(partial(self.directivity, phi=np.pi), theta[500:])))
         return horizontal, vertical
 
     def plot_radiation_pattern(self, plot_type='polar', field=False):

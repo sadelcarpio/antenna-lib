@@ -9,6 +9,8 @@ class DipoleAntenna(SingleAntenna):
 
     def __init__(self, length: float, pol: float | str = 0.0, amplitude: float = 1.0):
         super().__init__(pol=pol, amplitude=amplitude)
+        if length <= 0:
+            raise ValueError('Dipole length must be greater than zero.')
         self.length = length
 
     @property
@@ -30,3 +32,6 @@ class DipoleAntenna(SingleAntenna):
 
     def play_wave_animation(self):
         """Implementation for this antenna type"""
+
+    def __repr__(self):
+        return f'<Dipole antenna with polarization:\n{self.polarization}>'
