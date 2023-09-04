@@ -41,7 +41,7 @@ class SingleAntenna(Antenna):
             raise FieldPatternNotImplementedException('The antenna does not have a `field_pattern`'
                                                       ' method implemented')
 
-    def power_pattern(self, theta: float, phi: float = 0.0) -> float:
+    def power_pattern(self, theta: float, phi: float) -> float:
         """Patrón de potencia, cuadrado del patrón de campo"""
         return self._field_pattern(theta, phi) ** 2
 
