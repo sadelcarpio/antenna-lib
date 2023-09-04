@@ -8,10 +8,18 @@ from antenna_lib.single_antennas.single import SingleAntenna
 class DipoleAntenna(SingleAntenna):
 
     def __init__(self, length: float, pol: float | str = 0.0, amplitude: float = 1.0):
-        super().__init__(pol=pol, amplitude=amplitude)
         if length <= 0:
             raise ValueError('Dipole length must be greater than zero.')
         self.length = length
+        if isinstance(pol, str):
+            if pol == 'horizontal':
+                pol = 90.0
+            elif pol == 'vertical':
+                pol = 0.0
+            else:
+                raise ValueError('Invalid polarization string')
+        self.angle = pol * np.pi / 180
+        super().__init__(pol=pol, amplitude=amplitude)
 
     @property
     def max_directivity(self):

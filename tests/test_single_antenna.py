@@ -11,7 +11,7 @@ class MyTestAntenna(SingleAntenna):
 
 
 def test_single_antenna_init():
-    antenna = MyTestAntenna(pol='vertical')
+    antenna = MyTestAntenna(pol=0.0)
     assert antenna.polarization.polarization_str == 'linear@0.0'
     assert pytest.approx(antenna.amplitude) == 1.0
 
