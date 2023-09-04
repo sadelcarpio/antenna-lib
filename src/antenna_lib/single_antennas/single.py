@@ -66,8 +66,8 @@ class SingleAntenna(Antenna):
 
     def _horizontal_vertical_patterns(self, theta: np.ndarray, phi: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         horizontal = np.array(list(map(partial(self.directivity, np.pi / 2), phi)))
-        vertical = np.array(list(map(partial(self.directivity, phi=0.0), theta[:500])) +
-                            list(map(partial(self.directivity, phi=np.pi), theta[500:])))
+        vertical = np.array(list(map(partial(self.directivity, phi=np.pi / 2), theta[:500])) +
+                            list(map(partial(self.directivity, phi=3 * np.pi / 2), theta[500:])))
         return horizontal, vertical
 
     def plot_radiation_pattern(self, plot_type='polar', field=False):
@@ -92,10 +92,10 @@ class SingleAntenna(Antenna):
         """Gráfico 3d del patrón de radiación."""
         theta, phi = np.meshgrid(np.linspace(0, np.pi, 100), np.linspace(0, 2 * np.pi, 100))
         r_prime = np.vectorize(self.field_pattern)(theta, phi) ** (1 if field else 2)
-        x_prime = r_prime * np.sin(theta) * np.cos(phi)
+        X_prime = r_prime * np.sin(theta) * np.cos(phi)
         Y_prime = r_prime * np.sin(theta) * np.sin(phi)
         Z_prime = r_prime * np.cos(theta)
-        X = x_prime
+        X = X_prime
         Y = Y_prime * np.cos(self.angle) - Z_prime * np.sin(self.angle)
         Z = Z_prime * np.cos(self.angle) + Y_prime * np.sin(self.angle)
         fig, ax = plt.subplots(subplot_kw={'projection': '3d'})
