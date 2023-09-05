@@ -9,7 +9,7 @@ class LoopAntenna(SingleAntenna):
         self.radius = radius
         self.polarization = PolarizationFactory.create_polarization(polarization)
 
-    def directivity(self, theta, phi):
+    def directivity(self, theta: float, phi: float = 0.0) -> float:
         """Implementation for this antenna type"""
 
     def plot_radiation_pattern(self, plot_type='polar', field=False):

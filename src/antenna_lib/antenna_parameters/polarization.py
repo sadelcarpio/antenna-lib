@@ -37,11 +37,8 @@ class Polarization:
                 return f'elliptical@{"rcp" if delta > 0 else "lcp"}@{round(ar, 2)}@{round(tau * 180 / np.pi, 2)}'
         return self._polarization_str
 
-    def __str__(self):
-        return f'<{self.polarization_str}, Polarization vector: {self.pol_vector.round(2)}>'
-
     def __repr__(self):
-        return self.__str__()
+        return f'<{self.polarization_str}, Polarization vector: {self.pol_vector.round(2)}>'
 
 
 class PolarizationFactory:

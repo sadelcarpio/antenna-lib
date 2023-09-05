@@ -11,10 +11,11 @@ class IsotropicAntenna(SingleAntenna):
         self.polarization = PolarizationFactory.create_polarization(polarization)
 
     @property
-    def max_directivity(self):
+    def max_directivity(self) -> float:
         return 1.0
 
-    def directivity(self, theta, phi):
+    def field_pattern(self, theta: float, phi: float = 0.0) -> float:
+        """Patrón de campo de antena insotropica."""
         return 1.0
 
     def play_wave_animation(self):

@@ -11,11 +11,6 @@ class Antenna(ABC):
         """Calcular directividad"""
         return
 
-    @property
-    def ftb(self):
-        """Calcula la relación FTB de la antena"""
-        return
-
     @abstractmethod
     def directivity(self, theta: float, phi: float):
         """Calcula la directividad para un ángulo determinado"""
