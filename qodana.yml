@@ -1,0 +1,10 @@
+version: "1.0"
+linter: jetbrains/qodana-python-community:2023.2
+bootstrap: |+
+  set -eu
+  rm -rf .idea/misc.xml
+  python3 -m venv /data/cache/venv && pip install -r requirements.txt
+profile:
+  name: qodana.recommended
+include:
+  - name: CheckDependencyLicenses
