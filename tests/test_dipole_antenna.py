@@ -23,10 +23,9 @@ def test_dipole_repr():
 def test_dipole_max_directivity(dip_length, max_directivity):
     dip = DipoleAntenna(length=dip_length)
     assert pytest.approx(dip.max_directivity, 1e-2) == max_directivity
-    with pytest.raises(Exception) as error_info:
+    with pytest.raises(AttributeError):
         # noinspection PyPropertyAccess
         dip.max_directivity = 1.0
-    assert "can't set attribute" in str(error_info.value)
 
 
 def test_dipole_field_pattern():
