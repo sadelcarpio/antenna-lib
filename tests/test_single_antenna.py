@@ -6,7 +6,7 @@ from antenna_lib.single_antennas import SingleAntenna
 
 class MyTestAntenna(SingleAntenna):
     """A super special antenna with a defined field pattern for testing"""
-    def field_pattern(self, theta: float, phi: float) -> float:
+    def field_pattern(self, theta: float, phi: float = 0.0) -> float:
         return np.sin(theta) * np.cos(phi)
 
 
