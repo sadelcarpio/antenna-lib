@@ -9,7 +9,6 @@ from scipy.integrate import dblquad
 from antenna_lib.antenna import Antenna
 from antenna_lib.antenna_parameters import PolarizationFactory
 from antenna_lib.exceptions import FieldPatternNotImplementedException
-from antenna_lib.utils.decorators import rotatory
 
 
 class SingleAntenna(Antenna):
@@ -75,15 +74,12 @@ class SingleAntenna(Antenna):
     def plot_3d_pattern(self, field=False):
         """Gráfico 3d del patrón de radiación."""
         theta, phi = np.meshgrid(np.linspace(0, np.pi, 100), np.linspace(0, 2 * np.pi, 100))
-        r_prime = np.vectorize(self.field_pattern)(theta, phi) ** (1 if field else 2)
-        X_prime = r_prime * np.sin(theta) * np.cos(phi)
-        Y_prime = r_prime * np.sin(theta) * np.sin(phi)
-        Z_prime = r_prime * np.cos(theta)
-        X = X_prime
-        Y = Y_prime * np.cos(self.angle) - Z_prime * np.sin(self.angle)
-        Z = Z_prime * np.cos(self.angle) + Y_prime * np.sin(self.angle)
+        r = np.vectorize(self.field_pattern)(theta, phi) ** (1 if field else 2)
+        x = r * np.sin(theta) * np.cos(phi)
+        y = r * np.sin(theta) * np.sin(phi)
+        z = r * np.cos(theta)
         fig, ax = plt.subplots(subplot_kw={'projection': '3d'})
-        ax.plot_surface(X, Y, Z, alpha=0.8, rstride=1, cstride=1, linewidth=0)
+        ax.plot_surface(x, y, z, alpha=0.8, rstride=1, cstride=1, linewidth=0)
         plt.show()
 
     def play_wave_animation(self):
