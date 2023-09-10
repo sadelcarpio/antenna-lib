@@ -7,8 +7,8 @@ class IsotropicAntenna(SingleAntenna):
     """Antena isotropica. Puede tener cualquier polarización. Su patrón es siempre omnidireccional"""
 
     def __init__(self, polarization: str = 'linear@0.0', amplitude: float = 1.0):
-        super().__init__(amplitude)
         self.polarization = PolarizationFactory.create_polarization(polarization)
+        super().__init__(amplitude)
 
     @property
     def max_directivity(self) -> float:

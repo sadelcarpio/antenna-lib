@@ -2,13 +2,14 @@ from __future__ import annotations
 
 import numpy as np
 
+from antenna_lib.antenna_parameters import PolarizationFactory
 from antenna_lib.single_antennas.single import SingleAntenna
 from antenna_lib.utils.decorators import rotatory
 
 
 class DipoleAntenna(SingleAntenna):
 
-    def __init__(self, length: float, pol: float | str = 0.0, amplitude: float = 1.0):
+    def __init__(self, length: float, pol: str | float = 0.0, amplitude: float = 1.0):
         if length <= 0:
             raise ValueError('Dipole length must be greater than zero.')
         self.length = length
@@ -20,7 +21,8 @@ class DipoleAntenna(SingleAntenna):
             else:
                 raise ValueError('Invalid polarization string')
         self.angle = pol * np.pi / 180
-        super().__init__(pol=pol, amplitude=amplitude)
+        self.polarization = PolarizationFactory.create_polarization(f'linear@{pol}')
+        super().__init__(amplitude=amplitude)
 
     @property
     def max_directivity(self):
@@ -39,9 +41,6 @@ class DipoleAntenna(SingleAntenna):
             return np.sin(theta)
         e = ((np.cos(np.pi * kl / 2 * np.cos(theta)) - np.cos(np.pi * kl / 2)) / np.sin(theta))
         return 0.0 if np.isnan(e) else e
-
-    def play_wave_animation(self):
-        """Implementation for this antenna type"""
 
     def __repr__(self):
         return f'<Dipole antenna with polarization:\n{self.polarization}>'

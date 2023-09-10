@@ -1,19 +1,17 @@
+import numpy as np
+
 from antenna_lib.antenna_parameters import PolarizationFactory
 from antenna_lib.single_antennas.single import SingleAntenna
+from scipy.special import jv
 
 
 class LoopAntenna(SingleAntenna):
 
-    def __init__(self, radius: float, polarization: str = 'linear@0', amplitude: float = 1.0):
-        super().__init__(amplitude)
+    def __init__(self, radius: float, polarization: str = 'linear@90.0', amplitude: float = 1.0):
         self.radius = radius
-        self.polarization = PolarizationFactory.create_polarization(polarization)
+        super().__init__(polarization, amplitude)
 
-    def directivity(self, theta: float, phi: float = 0.0) -> float:
-        """Implementation for this antenna type"""
-
-    def plot_radiation_pattern(self, plot_type='polar', field=False):
-        """Implementation for this antenna type"""
-
-    def play_wave_animation(self):
-        """Implementation for this antenna type"""
+    def field_pattern(self, theta: float, phi: float = 0.0) -> float:
+        if self.radius <= 1 / (6 * np.pi):
+            return np.sin(theta)
+        return jv(1, 2 * np.pi * self.radius * np.sin(theta))
