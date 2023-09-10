@@ -1,6 +1,5 @@
 import numpy as np
 
-from antenna_lib.antenna_parameters import PolarizationFactory
 from antenna_lib.single_antennas.single import SingleAntenna
 from scipy.special import jv
 
