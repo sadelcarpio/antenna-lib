@@ -30,7 +30,7 @@ class SingleAntenna(Antenna):
         return self.field_pattern(theta, phi) ** 2
 
     @property
-    def radiated_power(self):
+    def radiated_power(self) -> float:
         """Potencia radiada en todas las direcciones"""
         if self._radiated_power is None:
             f = lambda t, p: (self.field_pattern(t, p) ** 2) * np.sin(t)

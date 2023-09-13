@@ -19,7 +19,7 @@ class AntennaArray(Antenna):
             return self._polarization
         return self._polarization
 
-    def directivity(self, theta, phi):
+    def directivity(self, theta: float, phi: float):
         """Implementation for this antenna type"""
 
     def max_directivity(self):

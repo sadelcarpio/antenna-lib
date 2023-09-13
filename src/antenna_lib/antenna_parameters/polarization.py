@@ -50,18 +50,18 @@ class PolarizationFactory:
         return Polarization(pol_vector, polarization_str)
 
     @classmethod
-    def parse_pol_vector(cls, polarization) -> np.ndarray:
-        if polarization.startswith('linear'):
+    def parse_pol_vector(cls, polarization_str: str) -> np.ndarray:
+        if polarization_str.startswith('linear'):
             try:
-                polarization_angle = float(polarization.split('@')[1]) * np.pi / 180
+                polarization_angle = float(polarization_str.split('@')[1]) * np.pi / 180
             except IndexError:
                 raise IndexError('Invalid parameter for linear polarization angle. Format is "linear@{angle}"')
             except ValueError:
                 raise ValueError('Please specify a valid float number as an angle')
             return np.array([np.cos(polarization_angle), np.sin(polarization_angle)])
-        elif polarization.startswith('circular'):
+        elif polarization_str.startswith('circular'):
             try:
-                polarization_orientation = polarization.split('@')[1]
+                polarization_orientation = polarization_str.split('@')[1]
                 if polarization_orientation not in ['lcp', 'rcp']:
                     raise InvalidPolarizationException('No valid polarization orientation. Valid parameters are '
                                                        '"rcp", "lcp"')
@@ -69,11 +69,11 @@ class PolarizationFactory:
             except IndexError:
                 raise IndexError('Invalid parameter for circular polarization orientation. Format is '
                                  'circular@{orientation}')
-        elif polarization.startswith('elliptical'):
+        elif polarization_str.startswith('elliptical'):
             try:
-                orientation = polarization.split('@')[1]
-                ar = float(polarization.split('@')[2])
-                tau = float(polarization.split('@')[3]) * np.pi / 180
+                orientation = polarization_str.split('@')[1]
+                ar = float(polarization_str.split('@')[2])
+                tau = float(polarization_str.split('@')[3]) * np.pi / 180
 
                 if orientation not in ['rcp', 'lcp']:
                     raise InvalidPolarizationException('No valid Polarization orientation. Valid parameters are '

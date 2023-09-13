@@ -25,7 +25,7 @@ class DipoleAntenna(SingleAntenna):
         super().__init__(amplitude=amplitude)
 
     @property
-    def max_directivity(self):
+    def max_directivity(self) -> float:
         """Calculate max directivity"""
         if self.length <= 0.1:
             return 1.5
@@ -42,5 +42,5 @@ class DipoleAntenna(SingleAntenna):
         e = ((np.cos(np.pi * kl / 2 * np.cos(theta)) - np.cos(np.pi * kl / 2)) / np.sin(theta))
         return 0.0 if np.isnan(e) else e
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'<Dipole antenna with polarization:\n{self.polarization}>'
