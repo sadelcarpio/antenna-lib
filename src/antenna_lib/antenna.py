@@ -7,12 +7,12 @@ class Antenna(ABC):
     amplitude = None
 
     @property
-    def max_directivity(self):
+    @abstractmethod
+    def max_directivity(self) -> float:
         """Calcular directividad"""
-        return
 
     @abstractmethod
-    def directivity(self, theta: float, phi: float):
+    def directivity(self, theta: float, phi: float) -> float:
         """Calcula la directividad para un ángulo determinado"""
 
     @abstractmethod

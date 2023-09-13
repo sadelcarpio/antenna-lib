@@ -22,6 +22,9 @@ class AntennaArray(Antenna):
     def directivity(self, theta, phi):
         """Implementation for this antenna type"""
 
+    def max_directivity(self):
+        """Implementation for this antenna type"""
+
     def plot_radiation_pattern(self, plot_type='polar', field=False):
         """Implementation for this antenna type"""
 

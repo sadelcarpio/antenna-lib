@@ -42,7 +42,7 @@ class SingleAntenna(Antenna):
         return 4 * np.pi * self.power_pattern(theta, phi) / self.radiated_power
 
     @property
-    def max_directivity(self):
+    def max_directivity(self) -> float:
         """Implementación por defecto de la directividad máxima"""
         theta = np.linspace(0, np.pi, 100)
         phi = np.linspace(0, 2 * np.pi, 100)
@@ -91,4 +91,4 @@ class SingleAntenna(Antenna):
         plt.show()
 
     def play_wave_animation(self):
-        pass
+        """Reproduce animación de la onda"""

@@ -14,6 +14,16 @@ def test_dipole_init():
     assert str(error_info.value) == 'Dipole length must be greater than zero.'
 
 
+@pytest.mark.parametrize('pol, angle', [('horizontal', 90.0), ('vertical', 0.0), ('linear', None), (45.0, 45.0)])
+def test_dipole_multiple_init_pols(pol, angle):
+    if pol == 'linear':
+        with pytest.raises(ValueError):
+            dip = DipoleAntenna(length=0.5, pol=pol)
+    else:
+        dip = DipoleAntenna(length=0.5, pol=pol)
+        assert pytest.approx(dip.angle) == angle * np.pi / 180
+
+
 def test_dipole_repr():
     dip = DipoleAntenna(length=0.5)
     assert str(dip).startswith('<Dipole antenna with polarization:')
