@@ -1,4 +1,4 @@
-name: Qodana
+name: Qodana Scan
 on:
   pull_request:
   push:

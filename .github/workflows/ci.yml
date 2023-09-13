@@ -1,13 +1,11 @@
-name: Python package
+name: Lint and Test Python Package
 
 on:
   push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
 
 jobs:
-  build:
+  lint-and-test:
 
     runs-on: ubuntu-latest
     strategy:
