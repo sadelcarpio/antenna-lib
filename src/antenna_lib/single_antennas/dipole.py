@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import warnings
+
 import numpy as np
 
 from antenna_lib.antenna_parameters import PolarizationFactory
@@ -39,7 +41,9 @@ class DipoleAntenna(SingleAntenna):
         kl = 2 * self.length
         if self.length <= 0.1:
             return np.sin(theta)
-        e = ((np.cos(np.pi * kl / 2 * np.cos(theta)) - np.cos(np.pi * kl / 2)) / np.sin(theta))
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            e = ((np.cos(np.pi * kl / 2 * np.cos(theta)) - np.cos(np.pi * kl / 2)) / np.sin(theta))
         return 0.0 if np.isnan(e) else e
 
     def __repr__(self) -> str:

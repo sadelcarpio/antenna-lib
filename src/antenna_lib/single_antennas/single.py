@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import warnings
 from functools import partial
 
 import numpy as np
@@ -34,7 +35,9 @@ class SingleAntenna(Antenna):
         """Potencia radiada en todas las direcciones"""
         if self._radiated_power is None:
             f = lambda t, p: (self.field_pattern(t, p) ** 2) * np.sin(t)
-            self._radiated_power = dblquad(f, 0, 2 * np.pi, 0, np.pi)[0]
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                self._radiated_power = dblquad(f, 0, 2 * np.pi, 0, np.pi)[0]
         return self._radiated_power
 
     def directivity(self, theta: float, phi: float = 0.0) -> float:
@@ -51,9 +54,9 @@ class SingleAntenna(Antenna):
         return np.max(r)
 
     def _horizontal_vertical_patterns(self, theta: np.ndarray, phi: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-        horizontal = np.array(list(map(partial(self.directivity, np.pi / 2), phi)))
-        vertical = np.array(list(map(partial(self.directivity, phi=np.pi / 2), theta[:100])) +
-                            list(map(partial(self.directivity, phi=3 * np.pi / 2), np.flip(theta[100:]))))
+        horizontal = np.array(list(map(partial(self.power_pattern, np.pi / 2), phi)))
+        vertical = np.array(list(map(partial(self.power_pattern, phi=np.pi / 2), theta[:100])) +
+                            list(map(partial(self.power_pattern, phi=3 * np.pi / 2), np.flip(theta[100:]))))
         return horizontal, vertical
 
     def plot_radiation_pattern(self, polar=True, field=False, log_scale=False):
@@ -64,6 +67,7 @@ class SingleAntenna(Antenna):
             horizontal, vertical = np.sqrt(horizontal), np.sqrt(vertical)
         horizontal /= np.max(horizontal)
         vertical /= np.max(vertical)
+        plt.subplots_adjust(wspace=0.4)
         h_plane = plt.subplot(1, 2, 1, projection='polar')
         v_plane = plt.subplot(1, 2, 2, projection='polar')
         if log_scale:
