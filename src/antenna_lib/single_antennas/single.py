@@ -14,7 +14,9 @@ from antenna_lib.exceptions import FieldPatternNotImplementedException
 
 class SingleAntenna(Antenna):
 
-    def __init__(self, pol: str | float = 'linear@0.0', amplitude: float = 1.0):
+    def __init__(self,
+                 pol: str | float = 'linear@0.0',
+                 amplitude: float = 1.0):
         super().__init__()
         self.amplitude = amplitude
         if self.polarization is None:
@@ -96,3 +98,7 @@ class SingleAntenna(Antenna):
 
     def play_wave_animation(self):
         """Reproduce animación de la onda"""
+
+    def __rmul__(self, other: float):
+        self.amplitude = other * self.amplitude
+        return self

@@ -5,16 +5,22 @@ from antenna_lib.antenna_parameters import Polarization
 
 
 class AntennaArray(Antenna):
-    def __init__(self, antennas: list[Antenna]):
+    def __init__(self,
+                 antennas: list[Antenna],
+                 spacing: float = 0.5,
+                 phase_progression: float = 0.0):
         super().__init__()
         self.antennas = antennas
+        self.spacing = spacing
+        self.phase_progression = phase_progression
         self._polarization = None
 
     @property
     def polarization(self):
         """Calcular la polarización resultante a partir de las antenas que conforman el array"""
         if self._polarization is None:
-            pol = sum([antenna.amplitude * antenna.polarization.pol_vector for antenna in self.antennas])
+            pol = sum([antenna.amplitude * antenna.polarization.pol_vector * np.exp(1j * k * self.phase_progression)
+                       for k, antenna in enumerate(self.antennas)])
             self._polarization = Polarization(pol / np.linalg.norm(pol))
             return self._polarization
         return self._polarization

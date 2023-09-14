@@ -6,7 +6,10 @@ from scipy.special import jv
 
 class LoopAntenna(SingleAntenna):
 
-    def __init__(self, radius: float, polarization: str = 'linear@90.0', amplitude: float = 1.0):
+    def __init__(self,
+                 radius: float,
+                 polarization: str = 'linear@90.0',
+                 amplitude: float = 1.0):
         self.radius = radius
         super().__init__(polarization, amplitude)
 

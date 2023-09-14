@@ -11,7 +11,9 @@ from antenna_lib.utils.decorators import rotatory
 
 class DipoleAntenna(SingleAntenna):
 
-    def __init__(self, length: float, pol: str | float = 0.0, amplitude: float = 1.0):
+    def __init__(self,
+                 length: float, pol: str | float = 0.0,
+                 amplitude: float = 1.0):
         if length <= 0:
             raise ValueError('Dipole length must be greater than zero.')
         self.length = length
