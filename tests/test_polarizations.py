@@ -64,7 +64,7 @@ def test_invalid_polarizations_elliptical():
 @pytest.mark.parametrize('pol, pol_vector', [('linear@0.0', [1, 0]), ('circular@rcp', [0.7071068, 0.7071068j]),
                                              ('elliptical@rcp@1.5@45.0', [0.70710678, 0.27196415 + 0.65271395j])])
 def test_array_polarization_str(pol, pol_vector):
-    antennas = [IsotropicAntenna(polarization=pol) for _ in range(3)]
-    arr_antenna = AntennaArray(antennas)
+    antenna = IsotropicAntenna(polarization=pol)
+    arr_antenna = AntennaArray(antenna, n_elements=3)
     assert np.allclose(arr_antenna.polarization.pol_vector, np.array(pol_vector), 1e-6)
     assert arr_antenna.polarization.polarization_str == pol

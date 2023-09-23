@@ -15,10 +15,10 @@ def test_create_single_antenna():
 
 
 def test_create_array_antenna():
-    loops = [LoopAntenna(radius=1.2) for _ in range(3)]
-    arr_antenna = AntennaArray(loops)
+    loop = LoopAntenna(radius=1.2)
+    arr_antenna = AntennaArray(loop, n_elements=3)
     assert isinstance(arr_antenna, AntennaArray)
     assert isinstance(arr_antenna, Antenna)
-    assert len(arr_antenna.antennas) == 3
+    assert arr_antenna.n_elements == 3
     assert hasattr(arr_antenna, 'polarization')
     assert np.allclose(arr_antenna.polarization.pol_vector, np.array([0, 1]), 1e-6)

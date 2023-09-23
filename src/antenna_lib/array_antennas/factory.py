@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from antenna_lib.array_antennas import AntennaArray
+from antenna_lib.array_antennas.nonuniform_af import NonUniformAFStrategy
+from antenna_lib.array_antennas.uniform_af import UniformAFStrategy
 from antenna_lib.single_antennas import SingleAntenna
 
 
@@ -9,20 +11,16 @@ class AntennaArrayFactory:
     def create_array(cls,
                      antenna_elem: SingleAntenna,
                      n_elements: int,
-                     spacing: int,
+                     spacing: float,
                      phase_progression: float,
-                     amplitudes: float | list[float]):
+                     amplitudes: float | list[float]) -> AntennaArray:
         if isinstance(amplitudes, float):
-            antennas = [amplitudes * antenna_elem for _ in range(n_elements)]
+            strategy = UniformAFStrategy(n_elements, spacing, phase_progression)
         elif isinstance(amplitudes, list):
             if len(amplitudes) != n_elements:
                 raise ValueError("List of amplitudes specified is not the same length of the number of antenna "
                                  "elements.")
-            antennas = [amplitude * antenna_elem for amplitude, _ in zip(amplitudes, range(n_elements))]
+            strategy = NonUniformAFStrategy(amplitudes, spacing, phase_progression)
         else:
             raise TypeError("Amplitude parameter is needed. It can be `float` or `list` type")
-        # Here a difference can be made between:
-        # 1. Same amplitude, same spacing
-        # 2. Different amplitude, same spacing
-        # 3. Different amplitude, different spacing
-        return AntennaArray(antennas, spacing, phase_progression)
+        return AntennaArray(antenna_elem, n_elements, spacing, phase_progression, strategy)

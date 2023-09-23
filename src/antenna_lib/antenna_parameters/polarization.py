@@ -25,7 +25,7 @@ class Polarization:
             y_over_x = self.pol_vector[1] / self.pol_vector[0]
             if np.isreal(y_over_x):
                 # it's linear
-                y_over_x = np.real(y_over_x)
+                y_over_x = np.real(y_over_x)  # for the case of getting 0j
                 return f'linear@{np.arctan(y_over_x) * 180 / np.pi}'
             elif np.isclose(y_over_x, 1j) or np.isclose(y_over_x, -1j):
                 # it's circular

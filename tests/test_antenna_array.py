@@ -12,7 +12,7 @@ def test_array_factory():
                                                      spacing=3,
                                                      phase_progression=0.0,
                                                      amplitudes=[0.5, 1.5])
-    assert len(antenna_array.antennas) == 2
+    assert antenna_array.n_elements == 2
     assert pytest.approx(antenna_array.spacing) == 3
     assert hasattr(antenna_array, 'phase_progression')
 
