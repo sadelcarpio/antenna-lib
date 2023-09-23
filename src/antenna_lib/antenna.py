@@ -51,8 +51,8 @@ class Antenna(ABC):
 
     def plot_radiation_pattern(self, polar=True, field=False, log_scale=False):
         phi = np.linspace(0, 2 * np.pi, 200)
-        theta_math = np.linspace(0, np.pi, 100)
-        horizontal, vertical = self._horizontal_vertical_patterns(theta_math, phi)
+        theta_pattern = np.linspace(0, np.pi, 100)
+        horizontal, vertical = self._horizontal_vertical_patterns(theta_pattern, phi)
         theta = np.linspace(0, 2 * np.pi, 200)
         if field:
             horizontal, vertical = np.sqrt(horizontal), np.sqrt(vertical)

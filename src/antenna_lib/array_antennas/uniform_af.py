@@ -12,4 +12,5 @@ class UniformAFStrategy(AFStrategy):
 
     def af(self, theta, phi):
         kd = 2 * np.pi * self.spacing
-        return sum(np.exp(1j * n * (kd * np.cos(theta) + self.phase_progression)) for n in range(self.n_elements))
+        psi = kd * np.cos(theta) + self.phase_progression
+        return np.sin(self.n_elements * (psi / 2)) / np.sin(psi / 2)

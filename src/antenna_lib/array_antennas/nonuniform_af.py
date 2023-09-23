@@ -11,4 +11,6 @@ class NonUniformAFStrategy(AFStrategy):
         self.phase_progression = phase_progression * np.pi / 180
 
     def af(self, theta, phi):
-        pass
+        kd = 2 * np.pi * self.spacing
+        psi = kd * np.cos(theta) + self.phase_progression
+        return sum(amplitude * np.exp(1j * n * psi) for n, amplitude in enumerate(self.amplitudes))

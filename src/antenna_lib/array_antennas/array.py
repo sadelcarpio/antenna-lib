@@ -21,6 +21,9 @@ class AntennaArray(Antenna):
         self._array_factor_strategy = array_factor_strategy
         self._polarization = None
 
+    def array_factor(self, theta, phi):
+        return self._array_factor_strategy.af(theta, phi)
+
     @property
     def polarization(self):
         """Calcular la polarización resultante a partir de las antenas que conforman el array"""
@@ -32,20 +35,8 @@ class AntennaArray(Antenna):
             return self._polarization
         return self._polarization
 
-    def array_factor(self, theta, phi):
-        return self._array_factor_strategy.af(theta, phi)
-
     def field_pattern(self, theta, phi):
         return self.antenna.field_pattern(theta, phi) * self.array_factor(theta, phi)
-
-    def directivity(self, theta: float, phi: float):
-        """Implementation for this antenna type"""
-
-    def max_directivity(self):
-        """Implementation for this antenna type"""
-
-    def plot_radiation_pattern(self, polar=True, field=False, log_scale=False):
-        """Implementation for this antenna type"""
 
     def play_wave_animation(self):
         """Implementation for this antenna type"""
