@@ -8,7 +8,6 @@ def test_array_factory():
     # define antenna
     antenna = IsotropicAntenna()
     antenna_array = AntennaArrayFactory.create_array(antenna_elem=antenna,
-                                                     n_elements=2,
                                                      spacing=3,
                                                      phase_progression=0.0,
                                                      amplitudes=[0.5, 1.5])

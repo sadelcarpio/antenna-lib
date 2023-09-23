@@ -23,7 +23,3 @@ class SingleAntenna(Antenna):
 
     def play_wave_animation(self):
         """Reproduce animación de la onda"""
-
-    def __rmul__(self, other: float):
-        self.amplitude = other * self.amplitude
-        return self
