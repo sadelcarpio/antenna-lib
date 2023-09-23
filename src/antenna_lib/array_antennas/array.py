@@ -1,4 +1,4 @@
-from abc import abstractmethod, ABC
+from abc import abstractmethod
 
 from antenna_lib.antenna import Antenna
 from antenna_lib.antenna_parameters import Polarization

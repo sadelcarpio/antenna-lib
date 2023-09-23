@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 from antenna_lib.antenna_parameters import PolarizationFactory
-from antenna_lib.array_antennas import AntennaArray, AntennaArrayFactory
+from antenna_lib.array_antennas import AntennaArrayFactory
 from antenna_lib.exceptions import InvalidPolarizationException
 from antenna_lib.single_antennas.isotropic import IsotropicAntenna
 
