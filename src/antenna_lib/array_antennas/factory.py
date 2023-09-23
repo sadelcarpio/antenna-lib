@@ -14,9 +14,12 @@ class AntennaArrayFactory:
                      phase_progression: float = 0.0,
                      n_elements: None | int = None,
                      amplitudes: None | list[float] = None) -> AntennaArray:
-        if n_elements:
-            return UniformAFAntennaArray(antenna_elem, n_elements, spacing, phase_progression)
-        elif amplitudes and not n_elements:
-            return NonUniformAFAntennaArray(antenna_elem, amplitudes, spacing, phase_progression)
-        else:
+        registry = {
+            (int, type(None)): (UniformAFAntennaArray, n_elements),
+            (type(None), list): (NonUniformAFAntennaArray, amplitudes)
+        }
+        try:
+            ArrayType, arg = registry[(type(n_elements), type(amplitudes))]
+            return ArrayType(antenna_elem, arg, spacing, phase_progression)
+        except KeyError:
             raise ValueError("Need to specify either `amplitudes` or `n_elements`")
