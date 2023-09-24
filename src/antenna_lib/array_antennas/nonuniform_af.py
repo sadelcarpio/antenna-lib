@@ -1,11 +1,11 @@
 import numpy as np
 
 from antenna_lib.antenna_parameters import Polarization
-from antenna_lib.array_antennas import AntennaArray
+from antenna_lib.array_antennas.array import AntennaArray
 from antenna_lib.single_antennas import SingleAntenna
 
 
-class NonUniformAFAntennaArray(AntennaArray):
+class NonUniformAntennaArray(AntennaArray):
 
     def __init__(self, antenna: SingleAntenna, amplitudes: list[float], spacing: float = 0.5,
                  phase_progression: float = 0.0):

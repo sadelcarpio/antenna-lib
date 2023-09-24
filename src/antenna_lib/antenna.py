@@ -82,7 +82,20 @@ class Antenna(ABC):
         y = r * np.sin(theta) * np.sin(phi)
         z = r * np.cos(theta)
         fig, ax = plt.subplots(subplot_kw={'projection': '3d'})
-        ax.plot_surface(x, y, z, rstride=1, cstride=1, linewidth=0)
+        # to have same length in all axes
+        max_range = np.array([x.max() - x.min(), y.max() - y.min(), z.max() - z.min()]).max() / 2.0
+        mid_x = (x.max() + x.min()) * 0.5
+        mid_y = (y.max() + y.min()) * 0.5
+        mid_z = (z.max() + z.min()) * 0.5
+        ax.set_xlim(mid_x - max_range, mid_x + max_range)
+        ax.set_ylim(mid_y - max_range, mid_y + max_range)
+        ax.set_zlim(mid_z - max_range, mid_z + max_range)
+        # cmap according to r value
+        norm = plt.Normalize(0, np.max(r))
+        colors = norm(r)
+        cmap = plt.cm.get_cmap('jet')
+        ax.plot_surface(x, y, z, alpha=0.8, rstride=1, cstride=1, cmap='jet', facecolors=cmap(colors),
+                        linewidth=0, shade=True)
         plt.show()
 
     @abstractmethod
