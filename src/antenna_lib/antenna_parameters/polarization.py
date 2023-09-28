@@ -4,7 +4,9 @@ from antenna_lib.exceptions import InvalidPolarizationException
 
 
 class Polarization:
-    def __init__(self, pol_vector: np.ndarray, polarization_str: str = None):
+    def __init__(self,
+                 pol_vector: np.ndarray,
+                 polarization_str: str = None):
         """
         Inicializa la clase Polarization, con un vector de polarización (unitario) y una representación
         en string de su polarización.
@@ -21,8 +23,9 @@ class Polarization:
         if self._polarization_str is None:
             # Remember pol_vector has the form: x * E_x * exp(j * phi_x) + y * E_y * exp(j * phi_y)
             y_over_x = self.pol_vector[1] / self.pol_vector[0]
-            if np.isreal(y_over_x):
+            if np.isreal(y_over_x) or np.isclose(self.pol_vector[0], 0.0 + 0.0j):
                 # it's linear
+                y_over_x = np.real(y_over_x)  # for the case of getting 0j
                 return f'linear@{np.arctan(y_over_x) * 180 / np.pi}'
             elif np.isclose(y_over_x, 1j) or np.isclose(y_over_x, -1j):
                 # it's circular
@@ -36,6 +39,9 @@ class Polarization:
                 tau = np.arctan(np.tan(2 * gamma) * np.cos(delta)) / 2
                 return f'elliptical@{"rcp" if delta > 0 else "lcp"}@{round(ar, 2)}@{round(tau * 180 / np.pi, 2)}'
         return self._polarization_str
+
+    def __rmul__(self, other):
+        return other * self.pol_vector
 
     def __repr__(self):
         return f'<{self.polarization_str}, Polarization vector: {self.pol_vector.round(2)}>'

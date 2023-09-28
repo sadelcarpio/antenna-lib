@@ -37,8 +37,8 @@ def test_single_antenna_directivity():
     assert pytest.approx(antenna.directivity(np.pi, 0.0)) == 0.0
 
 
-@patch('antenna_lib.single_antennas.single.plt')
-@patch('antenna_lib.single_antennas.single.np')
+@patch('antenna_lib.antenna.plt')
+@patch('antenna_lib.antenna.np')
 def test_single_antenna_plot_radiation_pattern(mock_numpy: MagicMock, mock_pyplot: MagicMock):
     antenna = MyTestAntenna()
     antenna.plot_radiation_pattern()
@@ -57,8 +57,8 @@ def test_single_antenna_plot_radiation_pattern(mock_numpy: MagicMock, mock_pyplo
     mock_pyplot.subplot().set_rlim.assert_has_calls([call(-40), call(-40)])
 
 
-@patch('antenna_lib.single_antennas.single.plt')
-@patch('antenna_lib.single_antennas.single.np')
+@patch('antenna_lib.antenna.plt')
+@patch('antenna_lib.antenna.np')
 def test_single_antenna_plot_3d_pattern(mock_numpy: MagicMock, mock_pyplot: MagicMock):
     mock_numpy.meshgrid.return_value = MagicMock(), MagicMock()
     mock_pyplot.subplots.return_value = MagicMock(), MagicMock()

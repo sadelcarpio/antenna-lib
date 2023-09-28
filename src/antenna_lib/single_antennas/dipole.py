@@ -11,7 +11,9 @@ from antenna_lib.utils.decorators import rotatory
 
 class DipoleAntenna(SingleAntenna):
 
-    def __init__(self, length: float, pol: str | float = 0.0, amplitude: float = 1.0):
+    def __init__(self,
+                 length: float, pol: str | float = 0.0,
+                 amplitude: float = 1.0):
         if length <= 0:
             raise ValueError('Dipole length must be greater than zero.')
         self.length = length
@@ -38,13 +40,10 @@ class DipoleAntenna(SingleAntenna):
 
     @rotatory
     def field_pattern(self, theta: float, phi: float = 0.0) -> float:
-        kl = 2 * self.length
+        kl = 2 * np.pi * self.length
         if self.length <= 0.1:
             return np.sin(theta)
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            e = ((np.cos(np.pi * kl / 2 * np.cos(theta)) - np.cos(np.pi * kl / 2)) / np.sin(theta))
-        return 0.0 if np.isnan(e) else e
-
-    def __repr__(self) -> str:
-        return f'<Dipole antenna with polarization:\n{self.polarization}>'
+            e = ((np.cos(kl / 2 * np.cos(theta)) - np.cos(kl / 2)) / np.sin(theta))
+        return 0.0 if np.isnan(e) else np.abs(e)
