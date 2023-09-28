@@ -23,7 +23,7 @@ class Polarization:
         if self._polarization_str is None:
             # Remember pol_vector has the form: x * E_x * exp(j * phi_x) + y * E_y * exp(j * phi_y)
             y_over_x = self.pol_vector[1] / self.pol_vector[0]
-            if np.isreal(y_over_x):
+            if np.isreal(y_over_x) or np.isclose(self.pol_vector[0], 0.0 + 0.0j):
                 # it's linear
                 y_over_x = np.real(y_over_x)  # for the case of getting 0j
                 return f'linear@{np.arctan(y_over_x) * 180 / np.pi}'

@@ -97,7 +97,3 @@ class Antenna(ABC):
         ax.plot_surface(x, y, z, alpha=0.8, rstride=1, cstride=1, cmap='jet', facecolors=cmap(colors),
                         linewidth=0, shade=True)
         plt.show()
-
-    @abstractmethod
-    def play_wave_animation(self):
-        """Reproducir una animación de la onda"""

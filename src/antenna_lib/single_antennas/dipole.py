@@ -47,6 +47,3 @@ class DipoleAntenna(SingleAntenna):
             warnings.simplefilter("ignore")
             e = ((np.cos(kl / 2 * np.cos(theta)) - np.cos(kl / 2)) / np.sin(theta))
         return 0.0 if np.isnan(e) else np.abs(e)
-
-    def __repr__(self) -> str:
-        return f'<Dipole antenna with polarization:\n{self.polarization}>'

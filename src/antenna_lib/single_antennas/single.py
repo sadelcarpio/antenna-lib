@@ -21,5 +21,5 @@ class SingleAntenna(Antenna):
         raise FieldPatternNotImplementedException('The antenna does not have a `field_pattern`'
                                                   ' method implemented')
 
-    def play_wave_animation(self):
-        """Reproduce animación de la onda"""
+    def __repr__(self):
+        return f'<{self.__class__.__name__} with polarization:\n{self.polarization}'

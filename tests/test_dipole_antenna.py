@@ -26,7 +26,7 @@ def test_dipole_multiple_init_pols(pol, angle):
 
 def test_dipole_repr():
     dip = DipoleAntenna(length=0.5)
-    assert str(dip).startswith('<Dipole antenna with polarization:')
+    assert str(dip).startswith('<DipoleAntenna with polarization:')
 
 
 @pytest.mark.parametrize('dip_length, max_directivity', [(0.05, 1.5), (1.5, 2.226), (0.5, 1.641)])

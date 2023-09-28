@@ -19,6 +19,3 @@ class IsotropicAntenna(SingleAntenna):
     def field_pattern(self, theta: float, phi: float = 0.0) -> float:
         """Patrón de campo de antena insotropica."""
         return 1.0
-
-    def play_wave_animation(self):
-        """Implementation for this antenna type"""
